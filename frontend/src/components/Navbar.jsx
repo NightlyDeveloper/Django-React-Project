@@ -15,6 +15,9 @@ import Home from './Home';
 import InfoIcon from '@mui/icons-material/Info';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { Link, useLocation } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 
 const drawerWidth = 240;
 
@@ -22,25 +25,15 @@ export default function Navbar(props) {
     const location = useLocation();
     const path = location.pathname;
     const {content} = props;
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Navbar
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
-      >
-        <Toolbar />
+    const [open, setOpen ] = useState(false);
+
+    const changeOpen = () => {
+        setOpen(!open);
+    };
+
+    const myDrawer = (
+        <div>
+             <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
               <ListItem disablePadding>
@@ -72,7 +65,54 @@ export default function Navbar(props) {
           </List>
           
         </Box>
+        </div>
+    )
+
+
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+
+        <IconButton onClick={changeOpen} >
+            <MenuIcon sx={{ display: {sm: 'none'}, color:'inherit' }} />
+        </IconButton>
+
+          <Typography variant="h6" noWrap component="div">
+            Navbar
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+
+      <Drawer
+        variant="permanent"
+        sx={{
+            display: {xs: "none", sm: "block"},
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+      >
+       {myDrawer}
       </Drawer>
+
+        <Drawer
+        variant="temporary"
+        open={open}
+        onClose={changeOpen}
+        sx={{
+            display: {xs: "block", sm: "none"},
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+      >
+       {myDrawer}
+      </Drawer>
+
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         {content}
