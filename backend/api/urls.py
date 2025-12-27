@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import home
+from .views import *
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('/', home, name='home'),
-]
+router = DefaultRouter()
+router.register('project', Projects, basename='project')
+urlpatterns = router.urls
